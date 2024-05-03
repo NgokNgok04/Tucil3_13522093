@@ -1,11 +1,17 @@
 package src.backend.util;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pair {
     private List<String> sequenceWord;
     private int value;
 
+    public Pair(){
+        this.value = 100;
+        this.sequenceWord = new ArrayList<String>();
+    }
+    
     public Pair(List<String> sequenceWord, int value){
         this.sequenceWord = sequenceWord;
         this.value = value;

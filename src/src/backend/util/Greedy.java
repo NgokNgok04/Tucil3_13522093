@@ -36,51 +36,58 @@ public class Greedy {
         count++;
         if (wordQueue.isEmpty()){
             wordNextMove = Dictionary.findAllPossibleWord(start);
-            int index = foundEnd(wordNextMove, end);
-            if (index != -1){
-                String[] solution = new String[2];
-                solution[0] = start;
-                solution[1] = end;
-                return solution;
-            }
 
-            for(int i = 0; i < wordNextMove.length; i++){
-                if (visitedWord.get(wordNextMove[i]) == null){
-                    List<String> sequenceWordToConvert = Arrays.asList(wordNextMove[i]);
-                    wordQueue.insertPair(convertSequenceToPair(sequenceWordToConvert, end));
-                    visitedWord.put(wordNextMove[i], true);
-                }
-            }
-            return algorithmGreedy(start, end, wordQueue, visitedWord,count);
+            // for(int i = 0; i < wordNextMove.length; i++){
+            //     if (visitedWord.get(wordNextMove[i]) == null){
+            //         List<String> sequenceWordToConvert = Arrays.asList(wordNextMove[i]);
+            //         wordQueue.insertPair(convertSequenceToPair(sequenceWordToConvert, end));
+            //         visitedWord.put(wordNextMove[i], true);
+            //     }
+            // }
+            // return algorithmGreedy(start, end, wordQueue, visitedWord,count);
+        } else {
+            wordNextMove = Dictionary.findAllPossibleWord(wordQueue.getPair(0).getWord());
         }
 
-        wordNextMove = Dictionary.findAllPossibleWord(wordQueue.getPair(0).getWord());
-
-        
         int index = foundEnd(wordNextMove, end);
         if (index != -1){
             List<String> solution = new ArrayList<>();
-            for(int i = 0; i < wordQueue.getPair(0).getSequenceWord().size(); i++){
-                solution.add(wordQueue.getPair(0).getSequenceWord().get(i));
+
+            if (!wordQueue.isEmpty()){
+                for(int i = 0; i < wordQueue.getPair(0).getSequenceWord().size(); i++){
+                    solution.add(wordQueue.getPair(0).getSequenceWord().get(i));
+                }
             }
+            
             solution.add(0,start);
             solution.add(solution.size(),end);
-            System.out.println("COUNT" +count);
+            System.out.println("COUNT : " +count);
             return solution.toArray(new String[0]); 
         }
 
         List<String> sequenceWordToConvert;
+        if (wordQueue.isEmpty()){
+            wordQueue.insertPair(new Pair());
+        }
         Pair pairToDelete = wordQueue.getPair(0);
+        
         for(int i = 0; i < wordNextMove.length; i++){
             sequenceWordToConvert = new ArrayList<>();
 
             if (visitedWord.get(wordNextMove[i]) == null){
-                for(int j = 0; j < pairToDelete.getSequenceWord().size(); j++){
-                    sequenceWordToConvert.add(pairToDelete.getSequenceWord().get(j));
+                if (!wordQueue.isEmpty()){
+                    for(int j = 0; j < pairToDelete.getSequenceWord().size(); j++){
+                        sequenceWordToConvert.add(pairToDelete.getSequenceWord().get(j));
+                    }
+                    sequenceWordToConvert.add(sequenceWordToConvert.size(),wordNextMove[i]);
+                    wordQueue.insertPair(convertSequenceToPair(sequenceWordToConvert, end));
+                    
+                } else {
+                    sequenceWordToConvert.add(wordNextMove[i]);
+                    wordQueue.insertPair(convertSequenceToPair(sequenceWordToConvert, end));
                 }
-                sequenceWordToConvert.add(sequenceWordToConvert.size(),wordNextMove[i]);
                 visitedWord.put(wordNextMove[i], true);
-                wordQueue.insertPair(convertSequenceToPair(sequenceWordToConvert, end));
+
             }
         }
         
