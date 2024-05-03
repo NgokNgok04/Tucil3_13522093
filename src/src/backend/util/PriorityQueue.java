@@ -39,7 +39,7 @@ public class PriorityQueue {
 
     public void deletePair(Pair pairToDelete){
         for(int i = 0; i < this.wordQueue.size(); i++){
-            if (this.wordQueue.get(i).isEqual(pairToDelete)){
+            if (this.wordQueue.get(i).getNode().isEqual(pairToDelete.getNode())){
                 this.wordQueue.remove(i);
                 break;
             }

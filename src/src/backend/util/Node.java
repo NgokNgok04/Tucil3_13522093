@@ -1,5 +1,5 @@
 package src.backend.util;
-
+import java.util.*;
 public class Node {
     private Node previousNode;
     private String current;
@@ -36,9 +36,38 @@ public class Node {
         this.previousNode = previousNode;
     }
 
+    public boolean isEqual(Node currentNode){
+        if (this.current == currentNode.current){
+            return false;
+        }
+        
+        while((previousNode != null) && (currentNode.previousNode != null)){
+            if (previousNode.current != currentNode.previousNode.current){
+                return false;
+            }
+            previousNode = previousNode.previousNode;
+            currentNode = currentNode.previousNode;
+        }
+
+        return true;
+    }
+
+
     public void concatNode(Node nextNode){
         this.nextNode = nextNode;
         nextNode.previousNode = this;
+    }
+
+    public List<String> convertNodeToArrayFromBackward(){
+        List<String> solution = new ArrayList<>(100);
+        solution.add(this.current);
+
+        while(previousNode != null){
+            solution.add(previousNode.current);
+            previousNode = previousNode.previousNode;
+        }
+        
+        return solution;
     }
 
     public void displayNodeForward(){
@@ -54,13 +83,13 @@ public class Node {
         System.out.println("]");
     }
     
-    public void displayNodePrevious(){
-        System.out.print("[");
+    public void displayNodeBackward(){
+        System.out.print("(");
         System.out.print(this.current);
         while(previousNode != null){
             System.out.print(", " + previousNode.current);
             previousNode = previousNode.previousNode;
         }
-        System.out.println("]");
+        System.out.print(")");
     }
 }

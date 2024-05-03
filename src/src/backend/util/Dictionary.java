@@ -30,7 +30,7 @@ public class Dictionary {
         return dictionary.contains(word);
     }
 
-    public static String[] findAllPossibleWord(String word) {
+    public static List<String> findAllPossibleWord(String word) {
         word = word.toLowerCase();
 
         List<String> tempPossibleWord = new ArrayList<>();
@@ -58,8 +58,7 @@ public class Dictionary {
             }
         }
 
-        String[] possibleWord = tempPossibleWord.toArray(new String[0]);
-        return possibleWord;
+        return tempPossibleWord;
     }
 
 }
