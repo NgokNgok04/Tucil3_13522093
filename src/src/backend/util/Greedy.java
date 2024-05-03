@@ -1,7 +1,7 @@
 package src.backend.util;
 import java.util.*;
-public class UCS {
-    public UCS(){};
+public class Greedy {
+    public Greedy(){};
 
     public int calculateCost(String word, String end){
         int cost = 0;
@@ -31,16 +31,27 @@ public class UCS {
     }
 
 
-    public String[] algorithmUCS(String start, String end, PriorityQueue wordQueue){
+    public String[] algorithmGreedy(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord,int count){
         String[] wordNextMove = new String[0];
+        count++;
         if (wordQueue.isEmpty()){
             wordNextMove = Dictionary.findAllPossibleWord(start);
+            int index = foundEnd(wordNextMove, end);
+            if (index != -1){
+                String[] solution = new String[2];
+                solution[0] = start;
+                solution[1] = end;
+                return solution;
+            }
 
             for(int i = 0; i < wordNextMove.length; i++){
-                List<String> sequenceWordToConvert = Arrays.asList(wordNextMove[i]);
-                wordQueue.insertPair(convertSequenceToPair(sequenceWordToConvert, end));
+                if (visitedWord.get(wordNextMove[i]) == null){
+                    List<String> sequenceWordToConvert = Arrays.asList(wordNextMove[i]);
+                    wordQueue.insertPair(convertSequenceToPair(sequenceWordToConvert, end));
+                    visitedWord.put(wordNextMove[i], true);
+                }
             }
-            return algorithmUCS(start, end, wordQueue);
+            return algorithmGreedy(start, end, wordQueue, visitedWord,count);
         }
 
         wordNextMove = Dictionary.findAllPossibleWord(wordQueue.getPair(0).getWord());
@@ -52,35 +63,30 @@ public class UCS {
             for(int i = 0; i < wordQueue.getPair(0).getSequenceWord().size(); i++){
                 solution.add(wordQueue.getPair(0).getSequenceWord().get(i));
             }
-            // List<String> solution = wordQueue.getPair(0).getSequenceWord();
             solution.add(0,start);
             solution.add(solution.size(),end);
+            System.out.println("COUNT" +count);
             return solution.toArray(new String[0]); 
         }
-        
+
+        List<String> sequenceWordToConvert;
+        Pair pairToDelete = wordQueue.getPair(0);
         for(int i = 0; i < wordNextMove.length; i++){
-            List<String> sequenceWordToConvert = new ArrayList<>();
+            sequenceWordToConvert = new ArrayList<>();
 
-            for(int j = 0; j < wordQueue.getPair(0).getSequenceWord().size(); i++){
-                sequenceWordToConvert.add(sequenceWordToConvert.size(),wordQueue.getPair(0).getSequenceWord().get(j));
-
+            if (visitedWord.get(wordNextMove[i]) == null){
+                for(int j = 0; j < pairToDelete.getSequenceWord().size(); j++){
+                    sequenceWordToConvert.add(pairToDelete.getSequenceWord().get(j));
+                }
+                sequenceWordToConvert.add(sequenceWordToConvert.size(),wordNextMove[i]);
+                visitedWord.put(wordNextMove[i], true);
+                wordQueue.insertPair(convertSequenceToPair(sequenceWordToConvert, end));
             }
-            sequenceWordToConvert.add(sequenceWordToConvert.size(),wordNextMove[i]);
-            wordQueue.insertPair(convertSequenceToPair(sequenceWordToConvert, end));
-            // System.out.println("Insert");
         }
         
-        wordQueue.deletePair(wordQueue.getPair(0));
-        return algorithmUCS(start, end, wordQueue);
+        wordQueue.deletePair(pairToDelete);
+        return algorithmGreedy(start, end, wordQueue,visitedWord,count);
         
     }
 
 }
-
-// A-1 B-2 C-
-//  Sing [19 -> 8,0,0, 7 -> 4]
-//  King [0,0,0, 7 -> 4]
-//  Kind [0,0,0,0]
-//  
-//  
-//  

@@ -9,6 +9,9 @@ public class PriorityQueue {
     public PriorityQueue() {
         this.wordQueue = new ArrayList<>();
     }
+    public PriorityQueue(int n) {
+        this.wordQueue = new ArrayList<>(n);
+    }
 
     public Pair getPair(int index) {
         return this.wordQueue.get(index);
@@ -55,7 +58,7 @@ public class PriorityQueue {
                 System.out.print(",");
             }
         }
-        System.out.print("]");
+        System.out.println("]");
 
 
     }

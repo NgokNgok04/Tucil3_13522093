@@ -3,11 +3,13 @@ import java.util.Arrays;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Scanner;
-
+import java.util.HashMap;
+import java.util.Map;
 import src.backend.util.*;
 
 
 public class Main {
+    private static Instant startTime;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         
@@ -19,9 +21,19 @@ public class Main {
         String endInput = scanner.nextLine();
         endInput = endInput.toLowerCase();
 
-        PriorityQueue wordQueue = new PriorityQueue();
-        UCS ucsObject = new UCS();
-        String[] solution = ucsObject.algorithmUCS(startInput,endInput,wordQueue);
+        startTime = Instant.now();
+        PriorityQueue wordQueue = new PriorityQueue(100000);
+        Greedy greedyObject = new Greedy();
+        
+        Map<String,Boolean> visitedWord = new HashMap<>(100000);
+        int count = 0;
+        String[] solution = greedyObject.algorithmGreedy(startInput,endInput,wordQueue,visitedWord,count);
+
+
+        Instant endTime = Instant.now();
+
+        Duration duration = Duration.between(startTime, endTime);
+        System.out.println("Program execution duration: " + duration.toMillis() + " milliseconds");
 
         System.out.print("[");
         for(int i = 0; i < solution.length; i++){
