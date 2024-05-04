@@ -17,6 +17,10 @@ public class PriorityQueue {
         return this.wordQueue.get(index);
     }
 
+    public Pair getLastPair(){
+        return this.wordQueue.get(wordQueue.size() - 1);
+    }
+
     public void insertPair(Pair newPair){
         int newValue = newPair.getValue();
 
@@ -38,8 +42,8 @@ public class PriorityQueue {
     }
 
     public void deletePair(Pair pairToDelete){
-        for(int i = 0; i < this.wordQueue.size(); i++){
-            if (this.wordQueue.get(i).getNode().isEqual(pairToDelete.getNode())){
+        for(int i = 0; i < this.wordQueue.size(); i++){        
+            if (this.wordQueue.get(i).getNode().getValue().equals(pairToDelete.getNode().getValue())){
                 this.wordQueue.remove(i);
                 break;
             }
@@ -51,9 +55,11 @@ public class PriorityQueue {
     }
 
     public void displayWordQueue(){
+        Node nodeToDisplay;
         System.out.print("[");
         for(int i = 0; i < this.wordQueue.size(); i++){
-            this.wordQueue.get(i).displayPair();
+            nodeToDisplay = new Node(this.wordQueue.get(i).getNode());
+            nodeToDisplay.displayNodeBackward();
             if (i != (this.wordQueue.size() - 1)){
                 System.out.print(",");
             }

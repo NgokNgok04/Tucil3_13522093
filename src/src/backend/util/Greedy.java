@@ -36,28 +36,23 @@ public class Greedy {
         System.out.println("]");
     }
     // PriorityQueue -> Pair -> Node -> String
-    public List<String> algorithmGreedy(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord,int count){
+    public List<String> algorithmGreedy(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord){
+        visitedWord.put(start, true);
         List<String> wordNextMove = new ArrayList<>();
-        count++;
-        System.out.println("Iterasi " + count);
+        
         if (wordQueue.isEmpty()){
             Node startNode = new Node(start);
             wordQueue.insertPair(new Pair(startNode, calculateCost(start, end)));
-            
-            System.out.print("\nWORDNEXTMOVE : ");
-            displayListString(wordNextMove);
-            System.out.print("START WORDQUEUE : ");
-            wordQueue.displayWordQueue();
             visitedWord.put(start, true);
 
         }
-        wordNextMove = Dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue());
+        wordNextMove = Dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue(),visitedWord);
         
         if (foundEnd(wordNextMove, end)){
-            System.out.println("\nPreference : " + wordQueue.getPair(0).getNode().getValue());
-            wordQueue.getPair(0).getNode().displayNodeBackward();
-            List<String> solution = wordQueue.getPair(0).getNode().convertNodeToArrayFromBackward();
-            solution.add(0,end);
+            Node nodeSolution = wordQueue.getPair(0).getNode();
+            nodeSolution.concatNode(new Node(end));
+            
+            List<String> solution = nodeSolution.getNextNode().convertNodeToArrayFromBackward();
             return solution; 
         }
 
@@ -73,14 +68,7 @@ public class Greedy {
                 visitedWord.put(wordNextMove.get(i), true);
             }
         }
-        // System.out.println("\nPreference : " + pairTemplate.getNode().getValue());
-        System.out.print("\nWORDNEXTMOVE : ");
-        displayListString(wordNextMove);
-        System.out.print("PROCESS WORDQUEUE : ");
-        
-        wordQueue.displayWordQueue();
-        // wordQueue.deletePair(pairTemplate);
-        return algorithmGreedy(start, end, wordQueue,visitedWord,count);
+        return algorithmGreedy(start, end, wordQueue,visitedWord);
         
     }
 

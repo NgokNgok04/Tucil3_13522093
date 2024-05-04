@@ -5,6 +5,11 @@ public class Node {
     private String current;
     private Node nextNode;
 
+    public Node(Node currentNode){
+        this.current = currentNode.current;
+        this.previousNode = currentNode.previousNode;
+        this.nextNode = currentNode.nextNode;
+    }
 
     public Node(String current){
         this.current = current;
@@ -37,16 +42,8 @@ public class Node {
     }
 
     public boolean isEqual(Node currentNode){
-        if (this.current == currentNode.current){
+        if (this.current.equals(currentNode.current)){
             return false;
-        }
-        
-        while((previousNode != null) && (currentNode.previousNode != null)){
-            if (previousNode.current != currentNode.previousNode.current){
-                return false;
-            }
-            previousNode = previousNode.previousNode;
-            currentNode = currentNode.previousNode;
         }
 
         return true;
@@ -78,7 +75,6 @@ public class Node {
             System.out.print(", " +nextNode.current);
             nextNode = nextNode.nextNode;
         }
-        // System.out.print(nextNode.current);
         
         System.out.println("]");
     }

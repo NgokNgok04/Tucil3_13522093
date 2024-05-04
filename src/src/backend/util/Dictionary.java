@@ -3,7 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
-
+import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class Dictionary {
         return dictionary.contains(word);
     }
 
-    public static List<String> findAllPossibleWord(String word) {
+    public static List<String> findAllPossibleWord(String word,Map<String,Boolean> visitedWord) {
         word = word.toLowerCase();
 
         List<String> tempPossibleWord = new ArrayList<>();
@@ -50,7 +50,7 @@ public class Dictionary {
                     modifiedString = ((char) (97 + j)) + word.substring(1);
                 }
 
-                if (!modifiedString.equals(resetWord)){
+                if (!modifiedString.equals(resetWord) && visitedWord.get(modifiedString) == null){
                     if(dictionary.isAValidWord(modifiedString)){
                         tempPossibleWord.add(modifiedString);
                     }
