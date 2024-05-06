@@ -31,7 +31,7 @@ public class Main {
         endInput = endInput.toLowerCase();
 
         System.out.println("Select Method : ");
-        System.out.println("1. GBDS : ");
+        System.out.println("1. GBFS : ");
         System.out.println("2. UCS : ");
         System.out.println("3. A* : ");
         System.out.println("Choose 1,2,3 : ");
@@ -39,11 +39,13 @@ public class Main {
 
 
         startTime = Instant.now();
+
         PriorityQueue wordQueue = new PriorityQueue(100000);
         Greedy greedyObject = new Greedy();
         UCS ucsObject = new UCS();
         Astar aStarObject = new Astar();
         Map<String,Boolean> visitedWord = new HashMap<>(100000);
+        
         List<String> solution;
         MyDictionary dictionary = new MyDictionary();
         if(methodInput.equals("1")){

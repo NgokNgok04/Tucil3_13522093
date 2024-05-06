@@ -32,7 +32,6 @@ public class MyDictionary {
 
     public List<String> findAllPossibleWord(String word,String end,Map<String,Boolean> visitedWord) {
         // word = word.toLowerCase();
-        System.out.println("Komtol");
         List<String> tempPossibleWord = new ArrayList<>();
         // Dictionary dictionary = new Dictionary();
         

@@ -31,6 +31,15 @@ public class Astar {
         System.out.println("]");
     }
 
+    public List<String> invertListString(List<String> solution){
+        List<String> newSolution = new ArrayList<>(100);
+        for(int i = 0; i < solution.size(); i++){
+            newSolution.add(0,solution.get(i));
+        }
+
+        return newSolution;
+    }
+
     public boolean foundEnd(List<String> wordNextMove, String target){
         for(int i = 0; i < wordNextMove.size(); i++){
             if (wordNextMove.get(i).equals(target)){
@@ -57,6 +66,7 @@ public class Astar {
             nodeSolution.concatNode(new Node(end));
             
             List<String> solution = nodeSolution.getNextNode().convertNodeToArrayFromBackward();
+            solution = invertListString(solution);
             return solution; 
         }
         

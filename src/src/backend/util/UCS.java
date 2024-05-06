@@ -25,6 +25,15 @@ public class UCS {
         System.out.println("]");
     }
 
+    public List<String> invertListString(List<String> solution){
+        List<String> newSolution = new ArrayList<>(100);
+        for(int i = 0; i < solution.size(); i++){
+            newSolution.add(0,solution.get(i));
+        }
+
+        return newSolution;
+    }
+
     public List<String> algorithmUCS(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord, MyDictionary dictionary){
         List<String> wordNextMove;
         
@@ -33,22 +42,19 @@ public class UCS {
             wordQueue.insertPair(new Pair(startNode, 0));
             visitedWord.put(start, true);
         }
-        wordQueue.displayWordQueue();
         wordNextMove = dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue(), end, visitedWord);
 
         if(foundEnd(wordNextMove, end)){
             Node nodeSolution = new Node(wordQueue.getPair(0).getNode());
             nodeSolution.concatNode(new Node(end));
             List<String> solution = nodeSolution.getNextNode().convertNodeToArrayFromBackward();
-            
+            solution = invertListString(solution);
             return solution;
         }
 
         Pair pairTemplate = wordQueue.getPair(0);
         Node newNode;
-        System.out.println("Reference : " + pairTemplate.getNode().getValue());
-        System.out.println("WordNextMove : " );
-        displayListString(wordNextMove);
+
         for(int i = 0; i < wordNextMove.size();i++){
             Node nodeToConnect = new Node(pairTemplate.getNode());
             newNode = new Node(wordNextMove.get(i));
@@ -62,7 +68,7 @@ public class UCS {
         if(wordQueue.getLength() == 0){
             return new ArrayList<>();
         }
-        // wordQueue.displayWordQueue();
+
         return algorithmUCS(start, end, wordQueue, visitedWord, dictionary);
     }
 }
