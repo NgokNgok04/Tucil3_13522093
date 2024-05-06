@@ -20,7 +20,8 @@ public class Process {
 
         if (algorithmType.equals("GBFS")){
             Greedy greedyObject = new Greedy();
-            solution = greedyObject.algorithmGreedy(startWord, endWord, wordQueue, visitedWord);
+            List<String> wordListQueue = new ArrayList<>();
+            solution = greedyObject.algorithmGreedy(startWord, endWord, wordListQueue, visitedWord);
         } else {
             UCS ucsObject = new UCS();
             solution = ucsObject.algorithmUCS(startWord, endWord, wordQueue, visitedWord);

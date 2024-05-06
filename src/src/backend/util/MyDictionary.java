@@ -7,15 +7,15 @@ import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 
-public class Dictionary {
+public class MyDictionary {
     private HashSet<String> dictionary;
 
-    public Dictionary() {
-        this.dictionary = new HashSet<>();
+    public MyDictionary() {
+        dictionary = new HashSet<>(); 
         loadDictionary("src/backend/util/Dictionary.txt");
     }
 
-    public void loadDictionary(String filename) {
+    private void loadDictionary(String filename) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -30,11 +30,11 @@ public class Dictionary {
         return dictionary.contains(word);
     }
 
-    public static List<String> findAllPossibleWord(String word,Map<String,Boolean> visitedWord) {
+    public List<String> findAllPossibleWord(String word,Map<String,Boolean> visitedWord) {
         word = word.toLowerCase();
 
         List<String> tempPossibleWord = new ArrayList<>();
-        Dictionary dictionary = new Dictionary();
+        // Dictionary dictionary = new Dictionary();
         
         String resetWord = new String(word);
 
@@ -51,7 +51,7 @@ public class Dictionary {
                 }
 
                 if (!modifiedString.equals(resetWord) && visitedWord.get(modifiedString) == null){
-                    if(dictionary.isAValidWord(modifiedString)){
+                    if(this.isAValidWord(modifiedString)){
                         tempPossibleWord.add(modifiedString);
                     }
                 }

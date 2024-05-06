@@ -25,7 +25,7 @@ public class UCS {
         System.out.println("]");
     }
 
-    public List<String> algorithmUCS(String start, String end, PriorityQueue wordQueue,Map<String,Boolean> visitedWord){
+    public List<String> algorithmUCS(String start, String end, PriorityQueue wordQueue,Map<String,Boolean> visitedWord,MyDictionary dictionary){
         List<String> wordNextMove;
         visitedWord.put(start, true);
         
@@ -34,7 +34,11 @@ public class UCS {
             wordQueue.insertPair(new Pair(startNode, 0));
         }
         
-        wordNextMove = Dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue(),visitedWord);
+        wordNextMove = dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue(),visitedWord);
+
+        if (wordNextMove.size() == 0){
+            return new ArrayList<>();
+        }
 
         if(foundEnd(wordNextMove, end)){
             Node nodeSolution = new Node(wordQueue.getPair(0).getNode());
@@ -56,6 +60,6 @@ public class UCS {
         }
 
         wordQueue.deletePair(pairTemplate);
-        return algorithmUCS(start, end, wordQueue, visitedWord);
+        return algorithmUCS(start, end, wordQueue, visitedWord, dictionary);
     }
 }

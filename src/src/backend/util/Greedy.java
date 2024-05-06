@@ -2,28 +2,6 @@ package src.backend.util;
 import java.util.*;
 public class Greedy {
     public Greedy(){};
-
-    public int calculateCost(String word, String end){
-        int cost = 0;
-        char[] charWord = word.toCharArray();
-        char[] charTarget = end.toCharArray();
-        for(int i = 0; i < charWord.length; i++){
-            cost += Math.abs(charTarget[i] - charWord[i]);
-        }
-        
-        return cost;
-    }
-
-    public boolean foundEnd(List<String> wordNextMove, String target){
-        for(int i = 0; i < wordNextMove.size(); i++){
-            if (wordNextMove.get(i).equals(target)){
-                return true;
-            }
-        }
-        
-        return false;
-    }
-
     public void displayListString(List<String> wordNextMove){
         System.out.print("[");
         for(int i = 0; i < wordNextMove.size(); i++){
@@ -35,41 +13,58 @@ public class Greedy {
         }
         System.out.println("]");
     }
-    // PriorityQueue -> Pair -> Node -> String
-    public List<String> algorithmGreedy(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord){
-        visitedWord.put(start, true);
-        List<String> wordNextMove = new ArrayList<>();
-        
-        if (wordQueue.isEmpty()){
-            Node startNode = new Node(start);
-            wordQueue.insertPair(new Pair(startNode, calculateCost(start, end)));
-            visitedWord.put(start, true);
 
+    public String findCheapestCost(String currentWord, String end, Map<String,Boolean> visitedWord, MyDictionary dictionary){
+        List<String> word = dictionary.findAllPossibleWord(currentWord, visitedWord);
+        if (word.size() == 0){
+            return "Not Found";
         }
-        wordNextMove = Dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue(),visitedWord);
-        
-        if (foundEnd(wordNextMove, end)){
-            Node nodeSolution = wordQueue.getPair(0).getNode();
-            nodeSolution.concatNode(new Node(end));
+
+        char[] charTarget = end.toCharArray();
+        int cheapestCost = 100;
+        String cheapestWord = word.get(0);
+        for(int i = 0; i < word.size(); i++){
+            int cost = 0;
+            char[] charWord = word.get(i).toCharArray();
             
-            List<String> solution = nodeSolution.getNextNode().convertNodeToArrayFromBackward();
-            return solution; 
-        }
-
-        Pair pairTemplate = wordQueue.getPair(0);
-        Node newNode;
-        Node nodeToConnect;
-        for(int i = 0; i < wordNextMove.size();i++){
-            if (visitedWord.get(wordNextMove.get(i)) == null){
-                nodeToConnect = pairTemplate.getNode();
-                newNode = new Node(wordNextMove.get(i));
-                nodeToConnect.concatNode(newNode);
-                wordQueue.insertPair(new Pair(newNode, calculateCost(newNode.getValue(), end)));
-                visitedWord.put(wordNextMove.get(i), true);
+            for(int j = 0; j < charWord.length; j++){
+                cost += Math.abs(charTarget[j] - charWord[j]);
             }
+
+            if (cost <= cheapestCost){
+                cheapestCost = (int) cost;
+                cheapestWord = new String(word.get(i));
+            }
+
         }
-        return algorithmGreedy(start, end, wordQueue,visitedWord);
         
+        return cheapestWord;
     }
 
+    
+    // PriorityQueue -> Pair -> Node -> String
+    public List<String> algorithmGreedy(String start, String end, List<String> wordQueue,Map<String,Boolean> visitedWord, MyDictionary dictionary){
+
+        if(wordQueue.isEmpty()){
+            wordQueue.add(start);
+            visitedWord.put(start, true);
+            return algorithmGreedy(start, end, wordQueue, visitedWord, dictionary);
+        } else {
+            String nextWord = new String(wordQueue.get(wordQueue.size() - 1));
+            String cheapestWord = findCheapestCost(nextWord, end, visitedWord,dictionary);
+            if (cheapestWord.equals("Not Found")){
+                return new ArrayList<>();
+            }
+
+            wordQueue.add(cheapestWord);
+            visitedWord.put(cheapestWord, true);
+
+            if (cheapestWord.equals(end)){
+                visitedWord.put(cheapestWord, true);
+                return wordQueue;
+            }
+
+            return algorithmGreedy(start, end, wordQueue, visitedWord, dictionary);
+        }
+    }
 }
