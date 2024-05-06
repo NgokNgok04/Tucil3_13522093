@@ -29,6 +29,15 @@ public class Node {
         return this.previousNode;
     }
 
+    public int getNodeLength(){
+        Node newNode = new Node(this);
+        int count = 0;
+        while(newNode.previousNode != null){
+            count++;
+            newNode = newNode.previousNode;
+        }
+        return count;
+    }
     public void setValue(String current){
         this.current = current;
     }
@@ -80,12 +89,15 @@ public class Node {
     }
     
     public void displayNodeBackward(){
+
+        Node newNode = new Node(this);
         System.out.print("(");
-        System.out.print(this.current);
-        while(previousNode != null){
-            System.out.print(", " + previousNode.current);
-            previousNode = previousNode.previousNode;
+        while(newNode.previousNode != null){
+            System.out.print(newNode.current + ", ");
+            newNode = newNode.previousNode;
         }
+        System.out.print(newNode.current);
+
         System.out.print(")");
     }
 }

@@ -25,20 +25,16 @@ public class UCS {
         System.out.println("]");
     }
 
-    public List<String> algorithmUCS(String start, String end, PriorityQueue wordQueue,Map<String,Boolean> visitedWord,MyDictionary dictionary){
+    public List<String> algorithmUCS(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord, MyDictionary dictionary){
         List<String> wordNextMove;
-        visitedWord.put(start, true);
         
         if (wordQueue.isEmpty()){
             Node startNode = new Node(start);
             wordQueue.insertPair(new Pair(startNode, 0));
+            visitedWord.put(start, true);
         }
-        
-        wordNextMove = dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue(),visitedWord);
-
-        if (wordNextMove.size() == 0){
-            return new ArrayList<>();
-        }
+        wordQueue.displayWordQueue();
+        wordNextMove = dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue(), end, visitedWord);
 
         if(foundEnd(wordNextMove, end)){
             Node nodeSolution = new Node(wordQueue.getPair(0).getNode());
@@ -50,16 +46,23 @@ public class UCS {
 
         Pair pairTemplate = wordQueue.getPair(0);
         Node newNode;
+        System.out.println("Reference : " + pairTemplate.getNode().getValue());
+        System.out.println("WordNextMove : " );
+        displayListString(wordNextMove);
         for(int i = 0; i < wordNextMove.size();i++){
             Node nodeToConnect = new Node(pairTemplate.getNode());
             newNode = new Node(wordNextMove.get(i));
             nodeToConnect.concatNode(newNode);
-            
+            // displayListString(wordNextMove);
             wordQueue.insertPair(new Pair(newNode,pairTemplate.getValue() + 1));
             visitedWord.put(wordNextMove.get(i), true);
         }
 
         wordQueue.deletePair(pairTemplate);
+        if(wordQueue.getLength() == 0){
+            return new ArrayList<>();
+        }
+        // wordQueue.displayWordQueue();
         return algorithmUCS(start, end, wordQueue, visitedWord, dictionary);
     }
 }

@@ -16,6 +16,9 @@ public class PriorityQueue {
         return this.wordQueue.get(index);
     }
 
+    public int getLength(){
+        return this.wordQueue.size();
+    }
     public Pair getLastPair(){
         return this.wordQueue.get(wordQueue.size() - 1);
     }
@@ -58,10 +61,12 @@ public class PriorityQueue {
         System.out.print("[");
         for(int i = 0; i < this.wordQueue.size(); i++){
             nodeToDisplay = new Node(this.wordQueue.get(i).getNode());
-            nodeToDisplay.displayNodeBackward();
+            // nodeToDisplay.displayNodeBackward();
+            System.out.print(nodeToDisplay.getValue());
             if (i != (this.wordQueue.size() - 1)){
                 System.out.print(",");
             }
+    
         }
         System.out.println("]");
 

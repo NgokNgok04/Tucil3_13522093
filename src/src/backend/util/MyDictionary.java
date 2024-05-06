@@ -30,19 +30,17 @@ public class MyDictionary {
         return dictionary.contains(word);
     }
 
-    public List<String> findAllPossibleWord(String word,Map<String,Boolean> visitedWord) {
-        word = word.toLowerCase();
-
+    public List<String> findAllPossibleWord(String word,String end,Map<String,Boolean> visitedWord) {
+        // word = word.toLowerCase();
+        System.out.println("Komtol");
         List<String> tempPossibleWord = new ArrayList<>();
         // Dictionary dictionary = new Dictionary();
         
         String resetWord = new String(word);
-
         for (int i = 0; i < word.length(); i++){
             word = new String(resetWord);
-            
+
             for (int j = 0; j < 26; j++){
-                // charArray[i] = (char) (97 + j); //97 = 'a'
                 String modifiedString;
                 if (i != 0){
                     modifiedString = word.substring(0,i) + ((char) (97 + j)) + word.substring(i + 1);

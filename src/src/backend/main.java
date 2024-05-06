@@ -4,6 +4,7 @@ import java.util.*;
 import java.time.*;
 import src.backend.util.*;
 import src.backend.util.PriorityQueue;
+import src.backend.util.Node;
 // import src.backend.util.Process;
 
 // import java.io.IOException;
@@ -51,6 +52,7 @@ public class Main {
         } else if (methodInput.equals("2")){
             solution = ucsObject.algorithmUCS(startInput, endInput, wordQueue, visitedWord, dictionary);
         } else {
+            System.out.println("Masuk ke A*");
             solution = aStarObject.algorithmAstar(startInput, endInput, wordQueue, visitedWord, dictionary);
         }
         Instant endTime = Instant.now();

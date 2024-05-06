@@ -15,7 +15,9 @@ public class Greedy {
     }
 
     public String findCheapestCost(String currentWord, String end, Map<String,Boolean> visitedWord, MyDictionary dictionary){
-        List<String> word = dictionary.findAllPossibleWord(currentWord, visitedWord);
+        List<String> word = dictionary.findAllPossibleWord(currentWord, end, visitedWord);
+        System.out.println("Reference : " + currentWord);
+        displayListString(word);
         if (word.size() == 0){
             return "Not Found";
         }
@@ -28,10 +30,12 @@ public class Greedy {
             char[] charWord = word.get(i).toCharArray();
             
             for(int j = 0; j < charWord.length; j++){
-                cost += Math.abs(charTarget[j] - charWord[j]);
+                if(charWord[j] != charTarget[j]){
+                    cost ++;
+                }
             }
 
-            if (cost <= cheapestCost){
+            if (cost < cheapestCost){
                 cheapestCost = (int) cost;
                 cheapestWord = new String(word.get(i));
             }
