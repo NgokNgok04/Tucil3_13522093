@@ -1,16 +1,22 @@
-package src.backend.util;
-import java.util.*;
-public class UCS {
-    public UCS(){}
+package util;
 
-    public boolean foundEnd(List<String> wordNextMove, String target){
-        for(int i = 0; i < wordNextMove.size(); i++){
-            if (wordNextMove.get(i).equals(target)){
-                return true;
+import java.util.*;
+public class Astar {
+    public Astar(){};
+
+    public int calculateCost(Node word, String end){
+        int cost = 0;
+        char[] charWord = word.getValue().toCharArray();
+        char[] charTarget = end.toCharArray();
+
+        for(int j = 0; j < charWord.length; j++){
+            if(charWord[j] != charTarget[j]){
+                cost++;
             }
         }
-        
-        return false;
+
+        cost += word.getNodeLength();
+        return cost;
     }
 
     public void displayListString(List<String> wordNextMove){
@@ -34,12 +40,22 @@ public class UCS {
         return newSolution;
     }
 
-    public List<String> algorithmUCS(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord, MyDictionary dictionary, int nodeVisited){
+    public boolean foundEnd(List<String> wordNextMove, String target){
+        for(int i = 0; i < wordNextMove.size(); i++){
+            if (wordNextMove.get(i).equals(target)){
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    public List<String> algorithmAstar(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord, MyDictionary dictionary,int nodeVisited){
         List<String> wordNextMove = new ArrayList<>();
         
         if (wordQueue.isEmpty()){
             Node startNode = new Node(start);
-            wordQueue.insertPair(new Pair(startNode, startNode.getNodeLength()));
+            wordQueue.insertPair(new Pair(startNode, calculateCost(startNode, end)));
             visitedWord.put(start, true);
     
         }
@@ -65,7 +81,7 @@ public class UCS {
                 nodeToConnect = pairTemplate.getNode();
                 newNode = new Node(wordNextMove.get(i));
                 nodeToConnect.concatNode(newNode);
-                wordQueue.insertPair(new Pair(newNode, newNode.getNodeLength()) );
+                wordQueue.insertPair(new Pair(newNode, calculateCost(newNode, end)) );
                 visitedWord.put(wordNextMove.get(i), true);
             }
         }
@@ -73,8 +89,7 @@ public class UCS {
         if(wordQueue.getLength() == 0){
             return new ArrayList<>();
         }
-        return algorithmUCS(start, end, wordQueue,visitedWord, dictionary, nodeVisited);
+        return algorithmAstar(start, end, wordQueue,visitedWord, dictionary, nodeVisited);
         
     }
-    
 }

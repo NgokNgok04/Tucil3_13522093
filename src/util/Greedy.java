@@ -1,4 +1,4 @@
-package src.backend.util;
+package util;
 import java.util.*;
 public class Greedy {
     public Greedy(){};

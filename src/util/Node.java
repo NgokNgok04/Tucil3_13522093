@@ -1,4 +1,4 @@
-package src.backend.util;
+package util;
 import java.util.*;
 public class Node {
     private Node previousNode;

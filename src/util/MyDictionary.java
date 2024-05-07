@@ -1,4 +1,4 @@
-package src.backend.util;
+package util;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,7 +12,7 @@ public class MyDictionary {
 
     public MyDictionary() {
         dictionary = new HashSet<>(); 
-        loadDictionary("src/backend/util/Dictionary.txt");
+        loadDictionary("util/Dictionary.txt");
     }
 
     private void loadDictionary(String filename) {
