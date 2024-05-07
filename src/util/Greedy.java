@@ -62,6 +62,7 @@ public class Greedy {
             visitedWord.put(cheapestWord, true);
 
             if (cheapestWord.equals(end)){
+                wordQueue.add(end);
                 visitedWord.put(cheapestWord, true);
                 return wordQueue;
             }

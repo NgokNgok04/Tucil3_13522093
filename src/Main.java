@@ -44,15 +44,14 @@ public class Main {
             if(methodInput.equals("1")){
                 List<String> wordListQueue = new ArrayList<>();
                 solution = greedyObject.algorithmGreedy(startInput,endInput,wordListQueue,visitedWord, dictionary);
-                len = solution.size() - 1;
-                nodeVisited = solution.size();
+                len = solution.size() - 2;
+                nodeVisited = solution.size() - 1;
             } else if (methodInput.equals("2")){
                 solution = ucsObject.algorithmUCS(startInput, endInput, wordQueue, visitedWord, dictionary,0);
                 len = solution.size() - 2;
                 nodeVisited = Integer.parseInt(solution.get(solution.size() - 1));
                 
             } else {
-                System.out.println("Masuk ke A*");
                 solution = aStarObject.algorithmAstar(startInput, endInput, wordQueue, visitedWord, dictionary,0);
                 len = solution.size() - 2;
                 nodeVisited = Integer.parseInt(solution.get(solution.size() - 1));
@@ -61,16 +60,18 @@ public class Main {
             
             Duration duration = Duration.between(startTime, endTime);
             System.out.println("\n\nProgram execution duration: " + duration.toMillis() + " milliseconds");
-            System.out.println("Solution length : " + len);
             System.out.println("Node Visited: " + nodeVisited);
-            System.out.print("[");
-            for(int i = 0; i < solution.size() - 1; i++){
-                System.out.print(solution.get(i));
-                if (i != solution.size() - 2){
-                    System.out.print(",");
+            if (len > 0){
+                System.out.println("Solution length : " + len);
+                System.out.print("[");
+                for(int i = 0; i < solution.size() - 1; i++){
+                    System.out.print(solution.get(i));
+                    if (i != solution.size() - 2){
+                        System.out.print(",");
+                    }
                 }
+                System.out.print("]");
             }
-            System.out.print("]");
         } else {
             System.out.println("Masukan tidak Valid");
         }
