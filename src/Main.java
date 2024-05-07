@@ -2,15 +2,26 @@
 import java.util.*;
 // import java.util.Dictionary;
 import java.time.*;
+import java.util.Scanner;
 import util.*;
 import util.PriorityQueue;
-import util.Node;
-
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryUsage;
 public class Main {
     private static Instant startTime;
+    private static String formatMemoryUsage(MemoryUsage memoryUsage) {
+        return String.format("Init: %,d MB, Used: %,d MB, Committed: %,d MB, Max: %,d MB",
+                             memoryUsage.getInit() / (1024 * 1024),
+                             memoryUsage.getUsed() / (1024 * 1024),
+                             memoryUsage.getCommitted() / (1024 * 1024),
+                             memoryUsage.getMax() / (1024 * 1024));
+    }
     public static void main(String[] args){
-        Scanner scanner = new Scanner(System.in);
 
+        MemoryUsage beforeheapMemoryUsage = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+        // MemoryUsage nonHeapMemoryUsage = ManagementFactory.getMemoryMXBean().getNonHeapMemoryUsage();
+
+        Scanner scanner = new Scanner(System.in);
         System.out.print("Enter start word : ");
         String startInput = scanner.nextLine();
         startInput = startInput.toLowerCase();
@@ -70,11 +81,14 @@ public class Main {
                         System.out.print(",");
                     }
                 }
-                System.out.print("]");
+                System.out.println("]");
             }
         } else {
             System.out.println("Masukan tidak Valid");
         }
+        MemoryUsage afterheapMemoryUsage = ManagementFactory.getMemoryMXBean().getHeapMemoryUsage();
+        System.out.println("Heap Memory Usage: " + (afterheapMemoryUsage.getUsed() - beforeheapMemoryUsage.getUsed()) + "KB");
+        // System.out.println("Used Memory: " + usedMemory / 1024 + " KB");
         scanner.close();
     }
 }
