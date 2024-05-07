@@ -16,8 +16,6 @@ public class Greedy {
 
     public String findCheapestCost(String currentWord, String end, Map<String,Boolean> visitedWord, MyDictionary dictionary){
         List<String> word = dictionary.findAllPossibleWord(currentWord, end, visitedWord);
-        System.out.println("Reference : " + currentWord);
-        displayListString(word);
         if (word.size() == 0){
             return "Not Found";
         }

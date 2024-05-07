@@ -50,7 +50,7 @@ public class Astar {
         return false;
     }
 
-    public List<String> algorithmAstar(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord, MyDictionary dictionary){
+    public List<String> algorithmAstar(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord, MyDictionary dictionary,int nodeVisited){
         List<String> wordNextMove = new ArrayList<>();
         
         if (wordQueue.isEmpty()){
@@ -60,13 +60,14 @@ public class Astar {
     
         }
         wordNextMove = dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue(), end, visitedWord);
-
+        nodeVisited++;
         if (foundEnd(wordNextMove, end)){
             Node nodeSolution = wordQueue.getPair(0).getNode();
             nodeSolution.concatNode(new Node(end));
             
             List<String> solution = nodeSolution.getNextNode().convertNodeToArrayFromBackward();
             solution = invertListString(solution);
+            solution.add(String.valueOf(nodeVisited));
             return solution; 
         }
         
@@ -88,7 +89,7 @@ public class Astar {
         if(wordQueue.getLength() == 0){
             return new ArrayList<>();
         }
-        return algorithmAstar(start, end, wordQueue,visitedWord, dictionary);
+        return algorithmAstar(start, end, wordQueue,visitedWord, dictionary, nodeVisited);
         
     }
 }

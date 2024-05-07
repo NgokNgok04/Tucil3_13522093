@@ -29,7 +29,7 @@ public class Process {
         Instant endTime = Instant.now();
         Duration duration = Duration.between(startTime, endTime);
         this.timeExecution = (int) duration.toMillis();
-        this.len = solution.size();
+        this.len = solution.size() - 1;
         this.solution = solution.toArray(new String[0]);
         this.nodeVisited = 10;
     }

@@ -34,41 +34,47 @@ public class UCS {
         return newSolution;
     }
 
-    public List<String> algorithmUCS(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord, MyDictionary dictionary){
-        List<String> wordNextMove;
+    public List<String> algorithmUCS(String start, String end, PriorityQueue wordQueue, Map<String,Boolean> visitedWord, MyDictionary dictionary, int nodeVisited){
+        List<String> wordNextMove = new ArrayList<>();
         
         if (wordQueue.isEmpty()){
             Node startNode = new Node(start);
-            wordQueue.insertPair(new Pair(startNode, 0));
+            wordQueue.insertPair(new Pair(startNode, startNode.getNodeLength()));
             visitedWord.put(start, true);
+    
         }
         wordNextMove = dictionary.findAllPossibleWord(wordQueue.getPair(0).getNode().getValue(), end, visitedWord);
-
-        if(foundEnd(wordNextMove, end)){
-            Node nodeSolution = new Node(wordQueue.getPair(0).getNode());
+        nodeVisited++;
+        if (foundEnd(wordNextMove, end)){
+            Node nodeSolution = wordQueue.getPair(0).getNode();
             nodeSolution.concatNode(new Node(end));
+            
             List<String> solution = nodeSolution.getNextNode().convertNodeToArrayFromBackward();
             solution = invertListString(solution);
-            return solution;
+            solution.add(String.valueOf(nodeVisited));
+            return solution; 
         }
-
+        
         Pair pairTemplate = wordQueue.getPair(0);
         Node newNode;
-
+        Node nodeToConnect;
+        
         for(int i = 0; i < wordNextMove.size();i++){
-            Node nodeToConnect = new Node(pairTemplate.getNode());
-            newNode = new Node(wordNextMove.get(i));
-            nodeToConnect.concatNode(newNode);
-            // displayListString(wordNextMove);
-            wordQueue.insertPair(new Pair(newNode,pairTemplate.getValue() + 1));
-            visitedWord.put(wordNextMove.get(i), true);
-        }
 
+            if (visitedWord.get(wordNextMove.get(i)) == null){
+                nodeToConnect = pairTemplate.getNode();
+                newNode = new Node(wordNextMove.get(i));
+                nodeToConnect.concatNode(newNode);
+                wordQueue.insertPair(new Pair(newNode, newNode.getNodeLength()) );
+                visitedWord.put(wordNextMove.get(i), true);
+            }
+        }
         wordQueue.deletePair(pairTemplate);
         if(wordQueue.getLength() == 0){
             return new ArrayList<>();
         }
-
-        return algorithmUCS(start, end, wordQueue, visitedWord, dictionary);
+        return algorithmUCS(start, end, wordQueue,visitedWord, dictionary, nodeVisited);
+        
     }
+    
 }

@@ -38,17 +38,6 @@ public class Node {
         }
         return count;
     }
-    public void setValue(String current){
-        this.current = current;
-    }
-
-    public void setNextNode(Node nextNode){
-        this.nextNode = nextNode;
-    }
-
-    public void setPreviousNode(Node previousNode){
-        this.previousNode = previousNode;
-    }
 
     public boolean isEqual(Node currentNode){
         if (this.current.equals(currentNode.current)){
@@ -74,18 +63,6 @@ public class Node {
         }
         
         return solution;
-    }
-
-    public void displayNodeForward(){
-        System.out.print("[");
-
-        System.out.print(this.current);
-        while (nextNode != null){
-            System.out.print(", " +nextNode.current);
-            nextNode = nextNode.nextNode;
-        }
-        
-        System.out.println("]");
     }
     
     public void displayNodeBackward(){
