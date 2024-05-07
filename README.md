@@ -7,7 +7,6 @@
 * [Technologies Used](#technologies-used)
 * [Features](#features)
 * [Getting Started](#getting-started)
-* [Usage](#usage)
 * [Creator](#creator)
 <!-- * [License](#license) -->
 
